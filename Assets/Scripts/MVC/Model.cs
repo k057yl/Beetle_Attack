@@ -1,18 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Model : MonoBehaviour
+public class Model
 {
-    // Start is called before the first frame update
-    void Start()
+    public int Health { get; set; }
+    public int Damage { get; set; }
+
+    public Model(int health)
     {
-        
+        Health = health;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void TakeDamage(int damage)
     {
-        
+        Health -= damage;
+        if (Health <= Constants.ZERO)
+        {
+            Debug.Log("Game Over!!!");
+        }
     }
 }
