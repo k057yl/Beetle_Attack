@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class Model
 {
-    public int Health { get; set; }
-    public int Damage { get; set; }
+    private int _health;
+    public int Health
+    {
+        get { return _health;}
+        set { _health = value; }
+    }
 
     public Model(int health)
     {

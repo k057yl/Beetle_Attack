@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class InpunSystem
 {
@@ -7,7 +6,7 @@ public class InpunSystem
     public static InpunSystem Instance => _instance ?? (_instance = new InpunSystem());
 
     private NewInput _newInput;
-
+    
 
     private InpunSystem()
     {
@@ -19,7 +18,6 @@ public class InpunSystem
     {
         return _newInput.Gameplay.Movement.ReadValue<Vector2>();
     }
-    
     /*
     public bool GetTouch()
     {

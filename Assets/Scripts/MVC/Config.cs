@@ -6,4 +6,5 @@ public class Config : ScriptableObject
     public float Speed;
     public float SuperSpeed;
     public float BulletSpeed;
+    public Rigidbody2D Rigidbody2D { get; set; }
 }
