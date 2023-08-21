@@ -44,6 +44,42 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Fire"",
+                    ""type"": ""Button"",
+                    ""id"": ""6cc000fb-0410-4d04-97b4-339f99f3718a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""e1135629-e135-4c44-b3bf-bd3c0f9076f7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SlotOne"",
+                    ""type"": ""Button"",
+                    ""id"": ""1c23e46a-ed92-4505-8ba2-f98676c009b5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SlotTwo"",
+                    ""type"": ""Button"",
+                    ""id"": ""0802ba18-7826-4cce-a1ab-7c81d8f53573"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -112,6 +148,50 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
                     ""action"": ""Cursor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ffbea388-7c6e-4985-b8b4-b2c9dffbf07e"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1cc70df1-8872-4cb6-8c28-6b479c422fc2"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9cd42abf-4098-48ec-b053-32942382b66d"",
+                    ""path"": ""<Keyboard>/numpad1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SlotOne"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""10a35ce5-9322-46e0-a127-eedb45bca236"",
+                    ""path"": ""<Keyboard>/numpad2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SlotTwo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -122,6 +202,10 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
         m_Gameplay_Cursor = m_Gameplay.FindAction("Cursor", throwIfNotFound: true);
+        m_Gameplay_Fire = m_Gameplay.FindAction("Fire", throwIfNotFound: true);
+        m_Gameplay_Reload = m_Gameplay.FindAction("Reload", throwIfNotFound: true);
+        m_Gameplay_SlotOne = m_Gameplay.FindAction("SlotOne", throwIfNotFound: true);
+        m_Gameplay_SlotTwo = m_Gameplay.FindAction("SlotTwo", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -185,12 +269,20 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_Movement;
     private readonly InputAction m_Gameplay_Cursor;
+    private readonly InputAction m_Gameplay_Fire;
+    private readonly InputAction m_Gameplay_Reload;
+    private readonly InputAction m_Gameplay_SlotOne;
+    private readonly InputAction m_Gameplay_SlotTwo;
     public struct GameplayActions
     {
         private @NewInput m_Wrapper;
         public GameplayActions(@NewInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Gameplay_Movement;
         public InputAction @Cursor => m_Wrapper.m_Gameplay_Cursor;
+        public InputAction @Fire => m_Wrapper.m_Gameplay_Fire;
+        public InputAction @Reload => m_Wrapper.m_Gameplay_Reload;
+        public InputAction @SlotOne => m_Wrapper.m_Gameplay_SlotOne;
+        public InputAction @SlotTwo => m_Wrapper.m_Gameplay_SlotTwo;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -206,6 +298,18 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
             @Cursor.started += instance.OnCursor;
             @Cursor.performed += instance.OnCursor;
             @Cursor.canceled += instance.OnCursor;
+            @Fire.started += instance.OnFire;
+            @Fire.performed += instance.OnFire;
+            @Fire.canceled += instance.OnFire;
+            @Reload.started += instance.OnReload;
+            @Reload.performed += instance.OnReload;
+            @Reload.canceled += instance.OnReload;
+            @SlotOne.started += instance.OnSlotOne;
+            @SlotOne.performed += instance.OnSlotOne;
+            @SlotOne.canceled += instance.OnSlotOne;
+            @SlotTwo.started += instance.OnSlotTwo;
+            @SlotTwo.performed += instance.OnSlotTwo;
+            @SlotTwo.canceled += instance.OnSlotTwo;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -216,6 +320,18 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
             @Cursor.started -= instance.OnCursor;
             @Cursor.performed -= instance.OnCursor;
             @Cursor.canceled -= instance.OnCursor;
+            @Fire.started -= instance.OnFire;
+            @Fire.performed -= instance.OnFire;
+            @Fire.canceled -= instance.OnFire;
+            @Reload.started -= instance.OnReload;
+            @Reload.performed -= instance.OnReload;
+            @Reload.canceled -= instance.OnReload;
+            @SlotOne.started -= instance.OnSlotOne;
+            @SlotOne.performed -= instance.OnSlotOne;
+            @SlotOne.canceled -= instance.OnSlotOne;
+            @SlotTwo.started -= instance.OnSlotTwo;
+            @SlotTwo.performed -= instance.OnSlotTwo;
+            @SlotTwo.canceled -= instance.OnSlotTwo;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -237,5 +353,9 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnCursor(InputAction.CallbackContext context);
+        void OnFire(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
+        void OnSlotOne(InputAction.CallbackContext context);
+        void OnSlotTwo(InputAction.CallbackContext context);
     }
 }

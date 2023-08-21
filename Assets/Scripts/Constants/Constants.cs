@@ -11,6 +11,7 @@ public static class Constants
     public const int ONE_HUNDRED = 100;
 
 
+    public const float MINUS_ANGLE_90 = -90f;
     public const float ANGLE_90 = 90f;
 
     public const string BULLET = "Bullet";
