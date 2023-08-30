@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4973776156552332000}
   - component: {fileID: 1674816183057586103}
   - component: {fileID: 1256832227978883468}
-  - component: {fileID: 8974006166176737158}
+  - component: {fileID: 5683825369062360063}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: BulletShotgun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 6073327346847115542}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 89676eea46ffbb2499fc4723811a023c, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -124,7 +124,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.05
---- !u!114 &8974006166176737158
+--- !u!114 &5683825369062360063
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,8 +133,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 6073327346847115542}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48eba4b108123ea4a9f452a77a803302, type: 3}
+  m_Script: {fileID: 11500000, guid: 5da7240dd512aa64c8f5cea757d27630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 50
-  _rigidbody2D: {fileID: 1674816183057586103}
+  _impactPrefab: {fileID: 1075176278156378288, guid: 6358cd58e9a8ab041b0ade5ba54e0d10, type: 3}
+  _damage: 55

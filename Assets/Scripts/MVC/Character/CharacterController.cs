@@ -6,29 +6,25 @@ using Zenject;
 public class CharacterController : MonoBehaviour
 {
     [SerializeField] private Config _characterConfig;
+    [SerializeField] private Transform _bulletSpawnPoint;
 
     private Model _model;
+    public Model Model => _model;//-------------------
     private CharacterView _characterView;
-
-    private Camera _mainCamera;
-    private Transform _objectTransform;
-    private Vector3 _direction;
-
-    private bool _canTakeDamage = true;
-    
-    //-------------
     private IInput _input;
     private UIController _uiController;
-    //-------------
-    [SerializeField] private GameObject _bulletPrefab;
-    [SerializeField] private Transform _bulletSpawnPoint;
-    public Vector3 Direction;//-----------
+    private WeaponSwitcher _weaponSwitcher;
+    
+    private Transform _objectTransform;
+    
+    private bool _canTakeDamage = true;
+    
 
     [Inject]
-    private void Construct(IInput input, UIController uiController)//-------------
+    private void Construct(IInput input, UIController uiController)
     {
         _input = input;
-        _uiController = uiController;//-----------
+        _uiController = uiController;
     }
 
     private void Start()
@@ -44,10 +40,15 @@ public class CharacterController : MonoBehaviour
     private void Update()
     {
         RotateToMouse();
+        
         if (_input.IsFireTriggered())
         {
-            Fire();
+            Shot();
         }
+        
+        UpdateHealthText();
+        
+        HandleWeaponSwitchInput();
     }
 
     private void Initialized()
@@ -55,9 +56,13 @@ public class CharacterController : MonoBehaviour
         _model = new Model(Constants.ONE_HUNDRED);
 
         _characterConfig.Rigidbody2D = GetComponent<Rigidbody2D>();
-
-        _mainCamera = Camera.main;
+        _weaponSwitcher = GetComponent<WeaponSwitcher>();
+        
         _objectTransform = transform;
+
+        UpdateHealthText();
+        
+        _weaponSwitcher.SwitchWeaponToPistol();
     }
 
     private void Move()
@@ -70,10 +75,9 @@ public class CharacterController : MonoBehaviour
     {
         if (!Input.mousePresent) return;
         
-        Direction = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        var difference = Direction - _objectTransform.position;
-        //var mousePosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        //var difference = mousePosition - _objectTransform.position;
+        var direction = _input.GetCursorPosition();
+        var difference = direction - _objectTransform.position;
+        
         var rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg - Constants.ANGLE_90;
 
         _objectTransform.rotation = Quaternion.Euler(Constants.ZERO, Constants.ZERO, rotationZ);
@@ -81,7 +85,7 @@ public class CharacterController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.CompareTag(Constants.EASY_ENEMY) && _canTakeDamage)
+        if (col.gameObject.CompareTag(Constants.ENEMY) && _canTakeDamage)
         {
             _model.TakeDamage(Constants.TEN);
             Debug.Log("Damage 10");
@@ -92,9 +96,10 @@ public class CharacterController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.CompareTag(Constants.SPAWN_POINT))
+        if (col.CompareTag(Constants.SKULL))
         {
-            Debug.Log("Collision!!!");
+            col.gameObject.transform.Translate(Vector3.Lerp(transform.position, Vector3.up * 3f, 5f));
+            Destroy(col.gameObject, Constants.ONE);
         }
     }
 
@@ -104,8 +109,29 @@ public class CharacterController : MonoBehaviour
         _canTakeDamage = true;
     }
 
-    private void Fire()
+    private void Shot()
     {
-        Instantiate(_bulletPrefab, _bulletSpawnPoint.position, Quaternion.identity);
+        IWeapon currentWeapon = _weaponSwitcher.GetCurrentWeapon();
+        if (currentWeapon != null)
+        {
+            currentWeapon.Fire(_bulletSpawnPoint);
+        }
+    }
+    
+    private void UpdateHealthText()
+    {
+        _uiController.UpdateHealthText(_model.Health);
+    }
+
+    private void HandleWeaponSwitchInput()
+    {
+        if (_input.IsSlotOneTriggered())
+        {
+            _weaponSwitcher.SwitchWeaponToPistol();
+        }
+        else if (_input.IsSlotTwoTriggered())
+        {
+            _weaponSwitcher.SwitchWeaponToShotgun();
+        }
     }
 }

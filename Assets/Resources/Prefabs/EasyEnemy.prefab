@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 7131844632073753255}
   m_Layer: 0
   m_Name: EasyEnemy
-  m_TagString: EasyEnemy
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -170,4 +170,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: b2b0d4c81fe0b33429379fea2891d9be, type: 2}
   _health: 100
-  _DieEffect: {fileID: 1661911320023652492, guid: d382f872fc91ac948a29c683f030d9f1, type: 3}
+  _skullPrefab: {fileID: 8440450304967894950, guid: 650da5389d8a29148a37c2dc1cb691a6, type: 3}

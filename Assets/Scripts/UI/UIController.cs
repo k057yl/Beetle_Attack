@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class UIController : MonoBehaviour
 {
@@ -8,6 +9,13 @@ public class UIController : MonoBehaviour
     [SerializeField] private Text _killedText;
     [SerializeField] private Text _healthText;
 
+    private CharacterController _characterController;
+
+    [Inject]
+    private void Construct(CharacterController characterController)
+    {
+        _characterController = characterController;
+    }
     
     public void UpdateAmmoText(int currentAmmo, int maxAmmo)
     {
@@ -15,9 +23,9 @@ public class UIController : MonoBehaviour
         _totalAmmoText.text = maxAmmo.ToString();
     }
     
-    public void UpdateKilledText(int killed)
+    public void UpdateKilledText()//------int killed
     {
-        _killedText.text = killed.ToString();
+        _killedText.text = _characterController.Model.Kill.ToString();
     }
     
     public void UpdateHealthText(int health)

@@ -174,7 +174,7 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""9cd42abf-4098-48ec-b053-32942382b66d"",
-                    ""path"": ""<Keyboard>/numpad1"",
+                    ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -185,7 +185,7 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""10a35ce5-9322-46e0-a127-eedb45bca236"",
-                    ""path"": ""<Keyboard>/numpad2"",
+                    ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

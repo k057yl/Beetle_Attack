@@ -29,4 +29,15 @@ public class InputHandlerKeyboard : IInput
     {
         return _newInput.Gameplay.SlotTwo.triggered;
     }
+    
+    public Vector3 GetCursorPosition()
+    {
+        return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    }
+/*
+    public bool NoMousePresent()
+    {
+        return Input.mousePresent;
+    }
+*/    
 }

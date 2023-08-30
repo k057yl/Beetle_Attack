@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -5,16 +6,17 @@ using Zenject;
 public abstract class AbstractEnemy : MonoBehaviour
 {
     [SerializeField] private Config _config;
-
-    [SerializeField] private int _health;//------
-    [SerializeField] private GameObject _DieEffect;
+    [SerializeField] private int _health = Constants.ONE_HUNDRED;
+    [SerializeField] private GameObject _skullPrefab;
     
     private CharacterController _characterController;
+    private UIController _uiController;//------------
 
     [Inject]
-    private void Construct(CharacterController characterController)
+    private void Construct(CharacterController characterController, UIController uiController)
     {
         _characterController = characterController;
+        _uiController = uiController;//------------
     }
 
     private void Update()
@@ -24,7 +26,7 @@ public abstract class AbstractEnemy : MonoBehaviour
             FollowingPlayer();
         }
     }
-
+    
     private void FollowingPlayer()
     {
         var diference = _characterController.transform.position - transform.position;
@@ -33,46 +35,26 @@ public abstract class AbstractEnemy : MonoBehaviour
             Time.deltaTime * _config.Speed);
         transform.rotation = Quaternion.Euler(Constants.ZERO, Constants.ZERO, rotateZ);
     }
-
+   
     public void TakeDamage(int damage)
     {
         _health -= damage;
         if (_health <= Constants.ZERO)
         {
+            
             Debug.Log("Die");
-            Instantiate(_DieEffect, transform.position, Quaternion.identity);
-            Destroy(gameObject);
+            if (_uiController != null)
+            {
+                _characterController.Model.TakeKills(Constants.ONE);
+                _uiController.UpdateKilledText();
+            }
+            Die();
         }
     }
-}
-/*
-public abstract class AbstractEnemy : MonoBehaviour
-{
-    [SerializeField] private Config _config;
-    
-    private CharacterController _characterController;
-    private Quaternion _initialRotation;
-    
 
-    [Inject]
-    private void Construct(CharacterController characterController)
+    private void Die()
     {
-        _characterController = characterController;
-        _initialRotation = Quaternion.Euler(0f, 0f, Constants.MINUS_ANGLE_90);
-    }
-
-    private void Update()
-    {
-        FollowingPlayer();
-    }
-
-    protected virtual void FollowingPlayer()
-    {
-        var difference = _characterController.transform.position - transform.position;
-        var rotateZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-        transform.position = Vector2.MoveTowards(transform.position, _characterController.transform.position,
-            Time.deltaTime * _config.Speed);
-        transform.rotation = _initialRotation * Quaternion.Euler(0f, 0f, rotateZ);
+        Instantiate(_skullPrefab, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }
-*/

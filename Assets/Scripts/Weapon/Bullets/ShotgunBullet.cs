@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class StandartBullet : BaseBullet
+public class ShotgunBullet : BaseBullet
 {
     [SerializeField] private GameObject _impactPrefab;
     [SerializeField] private int _damage;
@@ -30,6 +30,6 @@ public class StandartBullet : BaseBullet
 
     public override void DestroyBulletTime()
     {
-        Destroy(gameObject, Constants.TWO);
+        Destroy(gameObject, Constants.ONE);
     }
 }

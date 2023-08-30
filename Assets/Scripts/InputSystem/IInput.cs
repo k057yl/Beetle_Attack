@@ -6,4 +6,5 @@ public interface IInput
     bool IsFireTriggered();
     bool IsSlotOneTriggered();
     bool IsSlotTwoTriggered();
+    Vector3 GetCursorPosition();
 }
