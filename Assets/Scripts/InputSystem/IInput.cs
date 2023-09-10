@@ -7,4 +7,5 @@ public interface IInput
     bool IsSlotOneTriggered();
     bool IsSlotTwoTriggered();
     Vector3 GetCursorPosition();
+    bool IsReloadTriggered();
 }

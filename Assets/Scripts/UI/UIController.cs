@@ -16,20 +16,20 @@ public class UIController : MonoBehaviour
     {
         _characterController = characterController;
     }
-    
+
     public void UpdateAmmoText(int currentAmmo, int maxAmmo)
     {
         _ammoText.text = currentAmmo.ToString();
         _totalAmmoText.text = maxAmmo.ToString();
     }
     
-    public void UpdateKilledText()//------int killed
+    public void UpdateKilledText()
     {
         _killedText.text = _characterController.Model.Kill.ToString();
     }
     
-    public void UpdateHealthText(int health)
+    public void UpdateHealthText()
     {
-        _healthText.text = health.ToString();
+        _healthText.text = _characterController.Model.Health.ToString();
     }
 }

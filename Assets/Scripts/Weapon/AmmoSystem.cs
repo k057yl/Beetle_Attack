@@ -6,99 +6,77 @@ public class AmmoSystem
     private int _maxAmmo;
     private int _magazineSize;
     private int _currentAmmo;
-    private bool _isReloading;
-    public bool IsReloading
-    {
-        get { return _isReloading; }
-    }
-    private UIController _uiController;
+    private float _reloadTime;
 
-    public AmmoSystem(int maxAmmo, int magazineSize, UIController uiController)
+    private bool _isReloading;
+    
+    public AmmoSystem(int maxAmmo, int magazineSize, float reloadTime)
     {
         _maxAmmo = maxAmmo;
         _magazineSize = magazineSize;
+        _reloadTime = reloadTime;
+        
         _currentAmmo = _magazineSize;
-        _uiController = uiController;
+        _isReloading = false;
     }
 
     public int GetCurrentAmmo()
     {
         return _currentAmmo;
     }
-    
+
     public int GetMaxAmmo()
     {
         return _maxAmmo;
     }
-    
-    public bool CanFire()
+
+    public bool IsEmpty()
     {
-        return _currentAmmo > Constants.ZERO && !_isReloading;
+        return _currentAmmo <= 0;
     }
 
-    public void Fire()
+    public void ConsumeAmmo()
     {
-        if (CanFire())
+        if (_currentAmmo > 0)
         {
             _currentAmmo--;
-
-            Debug.Log("Осталось патронов: " + _currentAmmo);
-            
-            _uiController.UpdateAmmoText(GetCurrentAmmo(), GetMaxAmmo());
-
-            if (_currentAmmo == Constants.ZERO)
-            {
-                Debug.Log("Обойма пуста. Необходима перезарядка.");
-                ReloadAsync();
-            }
-        }
-        else
-        {
-            Debug.Log("Невозможно произвести выстрел. Обойма пуста или идет перезарядка.");
         }
     }
     
-    public async Task ReloadAsync()
+    public async Task Reload()
+    {
+        await ReloadAsync();
+    }
+    
+    public async Task ReloadAuto()
+    {
+        await ConsumeAmmoAsync();
+    }
+    
+    private async Task ReloadAsync()
     {
         if (!_isReloading)
         {
             _isReloading = true;
-
-            Debug.Log("Начинается перезарядка...");
-            await Task.Delay(Constants.THREE_THOUSAND);
-
-            int ammoToAdd = Mathf.Min(_maxAmmo - _currentAmmo, _magazineSize);
-            _currentAmmo += ammoToAdd;
-            _maxAmmo -= ammoToAdd;
-
-            Debug.Log("Обойма перезаряжена. Патронов: " + _currentAmmo);
-
+            await Task.Delay((int)(_reloadTime * 1000));
+            _currentAmmo = _magazineSize;
             _isReloading = false;
-
-            _uiController.UpdateAmmoText(GetCurrentAmmo(), GetMaxAmmo());
         }
     }
     
-    public async void ReloadByButton()
+    public async Task ConsumeAmmoAsync()
     {
-        if (!_isReloading && _currentAmmo < _magazineSize)
+        if (_currentAmmo > 0)
         {
-            _isReloading = true;
-
-            Debug.Log("Начинается перезарядка по нажатию кнопки R...");
+            _currentAmmo--;
+        }
+        else if (_maxAmmo > 0)
+        {
             await ReloadAsync();
-
-            await Task.Delay(Constants.THREE_THOUSAND);
-
-            int ammoToAdd = Mathf.Min(_magazineSize - _currentAmmo, _maxAmmo);
-            _currentAmmo += ammoToAdd;
-            _maxAmmo -= ammoToAdd;
-
-            _isReloading = false;
-
-            Debug.Log("Обойма перезаряжена. Патронов: " + _currentAmmo);
-
-            _uiController.UpdateAmmoText(GetCurrentAmmo(), GetMaxAmmo());
+        }
+        else
+        {
+            Debug.Log("Нет патронов.");
         }
     }
 }

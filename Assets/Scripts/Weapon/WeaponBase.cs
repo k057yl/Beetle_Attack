@@ -1,13 +1,36 @@
 using UnityEngine;
 
-public abstract class WeaponBase : MonoBehaviour, IWeapon
+public class WeaponBase : MonoBehaviour, IWeapon
 {
-    public abstract void Fire(Transform bulletSpawnPoint);
+    private IWeapon _weapon;
 
-    public abstract void ButtonRecharge();
-
-    public bool Reload()
+    protected AmmoSystem _ammo;
+    
+    protected void InitializeAmmo(int maxAmmo, int magazineSize, float reloaded)//, UIController uiController
     {
-        return false;
+        _ammo = new AmmoSystem(maxAmmo, magazineSize, reloaded);//, uiController
+    }
+
+    public void SetStrategy(IWeapon strategy)
+    {
+        _weapon = strategy;
+    }
+    
+    public virtual void Fire(Transform shootPoint)
+    {
+        if (_weapon != null)
+        {
+            _weapon.Fire(shootPoint);
+        }
+    }
+    
+    public virtual void ReloadByButton()
+    {
+        _weapon.ReloadByButton();
+    }
+    
+    public bool GetIsReloading()
+    {
+        return _weapon.GetIsReloading();
     }
 }

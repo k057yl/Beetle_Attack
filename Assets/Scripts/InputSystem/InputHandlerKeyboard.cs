@@ -34,6 +34,11 @@ public class InputHandlerKeyboard : IInput
     {
         return Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
+
+    public bool IsReloadTriggered()
+    {
+        return _newInput.Gameplay.Reload.triggered;
+    }
 /*
     public bool NoMousePresent()
     {

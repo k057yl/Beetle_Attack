@@ -1,45 +1,46 @@
 using UnityEngine;
 using Zenject;
 
+
 public class Pistol : WeaponBase
 {
     [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private Camera _cameraFPS;
     
-    private int _currentAmmo;
-    private float _lastFiredTime;
 
-    private IInput _input;
-
-    public Camera CameraFPS;
+    [Inject] private UIController _uiController;
     
-//----------
-    [Inject]
-    private void Construct(IInput input)
-    {
-        _input = input;
-    }
-//-----------    
     private void Awake()
     {
-        _currentAmmo = 7;
+        InitializeAmmo(1000, 10, 2);
     }
     
     public override void Fire(Transform bulletSpawnPoint)
     {
-        if (!Input.mousePresent) return;
-        Debug.Log("Piu-piu");
+        if (!_ammo.IsEmpty())
+        {
+            Debug.Log("Piu-piu");
 
+            var cursorPosition = _cameraFPS.ScreenToWorldPoint(Input.mousePosition);
 
-        var cursorPosition = CameraFPS.ScreenToWorldPoint(Input.mousePosition);
+            var bullet = Instantiate(_bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+            bullet.GetComponent<Rigidbody2D>().AddForce(Vector2.Lerp(transform.position, cursorPosition, 100f) * 500f);
+            
+            _ammo.ConsumeAmmo();
+            
+            //_uiController.UpdateAmmoText(_ammo.GetCurrentAmmo(), _ammo.GetMaxAmmo());//-------------
+        }
 
-
-        var bullet = Instantiate(_bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);//-----------
-        
-        bullet.GetComponent<Rigidbody2D>().AddForce(Vector2.Lerp(transform.position, cursorPosition, 100f) * 500f);//-----------
+        else
+        {
+            _ammo.ReloadAuto();
+        }
     }
-    
-    public override void ButtonRecharge()
+
+    public override void ReloadByButton()
     {
-        
+        Debug.Log("Start");
+        _ammo.Reload();
+        Debug.Log("Start reload");
     }
 }
