@@ -2,7 +2,7 @@ using UnityEngine;
 
 public interface IWeapon
 {
-    void Fire(Transform shootPoint);
-    void ReloadByButton();
-    bool GetIsReloading();
+    void Fire(Transform bulletSpawnPoint);
+    void ButtonRecharge();
+    bool Reload();
 }

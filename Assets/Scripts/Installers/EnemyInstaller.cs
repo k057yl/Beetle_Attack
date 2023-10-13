@@ -7,11 +7,6 @@ public class EnemyInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        BindEasyEnemy();
-    }
-
-    private void BindEasyEnemy()
-    {
         Container
             .BindFactory<EasyEnemy, EasyEnemyFactory>()
             .FromComponentInNewPrefab(_easyEnemyPrefab)

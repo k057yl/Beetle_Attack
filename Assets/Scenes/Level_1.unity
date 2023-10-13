@@ -1358,17 +1358,5 @@ PrefabInstance:
       propertyPath: _monoInstallers.Array.data[3]
       value: 
       objectReference: {fileID: 1349390848}
-    - target: {fileID: 2530386900390932491, guid: 6894a62dec1cffe488cdd78a305cdcc5, type: 3}
-      propertyPath: _monoInstallers.Array.data[4]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2530386900390932491, guid: 6894a62dec1cffe488cdd78a305cdcc5, type: 3}
-      propertyPath: _monoInstallers.Array.data[5]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2530386900390932491, guid: 6894a62dec1cffe488cdd78a305cdcc5, type: 3}
-      propertyPath: _scriptableObjectInstallers.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6894a62dec1cffe488cdd78a305cdcc5, type: 3}

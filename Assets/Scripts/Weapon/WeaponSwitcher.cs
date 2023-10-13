@@ -1,33 +1,29 @@
 using UnityEngine;
 
-
 public class WeaponSwitcher : MonoBehaviour
 {
-    [SerializeField] private GameObject _pistolPrefab;
-    [SerializeField] private GameObject _shotgunPrefab;
+    [SerializeField] private Pistol _pistol;
+    [SerializeField] private Shotgun _shotgun;
+    
 
-    private WeaponBase _pistol;
-    private WeaponBase _shotgun;
-    private WeaponBase _activeWeapon;
+    private IWeapon _currentWeapon;
 
-    private void Start()
+    public void SwitchWeaponToPistol()
     {
-        _pistol = Instantiate(_pistolPrefab).GetComponent<WeaponBase>();
-        _shotgun = Instantiate(_shotgunPrefab).GetComponent<WeaponBase>();
+        Debug.Log("pistol");
         
-        SwitchWeapon(WeaponType.Pistol);
+        _currentWeapon = _pistol;
     }
 
-    public void SwitchWeapon(WeaponType weaponType)
+    public void SwitchWeaponToShotgun()
     {
-        _pistol.gameObject.SetActive(weaponType == WeaponType.Pistol);
-        _shotgun.gameObject.SetActive(weaponType == WeaponType.Shotgun);
+        Debug.Log("shotgun");
         
-        _activeWeapon = weaponType == WeaponType.Pistol ? _pistol : _shotgun;
+        _currentWeapon = _shotgun;
     }
 
-    public WeaponBase GetActiveWeapon()
+    public IWeapon GetCurrentWeapon()
     {
-        return _activeWeapon;
+        return _currentWeapon;
     }
 }
