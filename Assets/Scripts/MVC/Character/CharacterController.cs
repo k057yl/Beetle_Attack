@@ -7,25 +7,18 @@ public class CharacterController : MonoBehaviour
 {
     [SerializeField] private Config _characterConfig;
     [SerializeField] private Transform _bulletSpawnPoint;
+    
+    [Inject] private IInput _input;
+    [Inject] private UIController _uiController;
 
     private Model _model;
     public Model Model => _model;//-------------------
     private CharacterView _characterView;
-    private IInput _input;
-    private UIController _uiController;
     private WeaponSwitcher _weaponSwitcher;
     
     private Transform _objectTransform;
-    
     private bool _canTakeDamage = true;
     
-
-    [Inject]
-    private void Construct(IInput input, UIController uiController)
-    {
-        _input = input;
-        _uiController = uiController;
-    }
 
     private void Start()
     {
