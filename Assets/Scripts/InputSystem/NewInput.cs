@@ -80,6 +80,15 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SuperSpeed"",
+                    ""type"": ""Button"",
+                    ""id"": ""87697d89-6b40-42aa-8ad1-f8b1837b72c0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -192,6 +201,17 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
                     ""action"": ""SlotTwo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d78fa18d-29ce-4a93-8cbe-de2849172c91"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SuperSpeed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -206,6 +226,7 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
         m_Gameplay_Reload = m_Gameplay.FindAction("Reload", throwIfNotFound: true);
         m_Gameplay_SlotOne = m_Gameplay.FindAction("SlotOne", throwIfNotFound: true);
         m_Gameplay_SlotTwo = m_Gameplay.FindAction("SlotTwo", throwIfNotFound: true);
+        m_Gameplay_SuperSpeed = m_Gameplay.FindAction("SuperSpeed", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -273,6 +294,7 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Reload;
     private readonly InputAction m_Gameplay_SlotOne;
     private readonly InputAction m_Gameplay_SlotTwo;
+    private readonly InputAction m_Gameplay_SuperSpeed;
     public struct GameplayActions
     {
         private @NewInput m_Wrapper;
@@ -283,6 +305,7 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
         public InputAction @Reload => m_Wrapper.m_Gameplay_Reload;
         public InputAction @SlotOne => m_Wrapper.m_Gameplay_SlotOne;
         public InputAction @SlotTwo => m_Wrapper.m_Gameplay_SlotTwo;
+        public InputAction @SuperSpeed => m_Wrapper.m_Gameplay_SuperSpeed;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -310,6 +333,9 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
             @SlotTwo.started += instance.OnSlotTwo;
             @SlotTwo.performed += instance.OnSlotTwo;
             @SlotTwo.canceled += instance.OnSlotTwo;
+            @SuperSpeed.started += instance.OnSuperSpeed;
+            @SuperSpeed.performed += instance.OnSuperSpeed;
+            @SuperSpeed.canceled += instance.OnSuperSpeed;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -332,6 +358,9 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
             @SlotTwo.started -= instance.OnSlotTwo;
             @SlotTwo.performed -= instance.OnSlotTwo;
             @SlotTwo.canceled -= instance.OnSlotTwo;
+            @SuperSpeed.started -= instance.OnSuperSpeed;
+            @SuperSpeed.performed -= instance.OnSuperSpeed;
+            @SuperSpeed.canceled -= instance.OnSuperSpeed;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -357,5 +386,6 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
         void OnReload(InputAction.CallbackContext context);
         void OnSlotOne(InputAction.CallbackContext context);
         void OnSlotTwo(InputAction.CallbackContext context);
+        void OnSuperSpeed(InputAction.CallbackContext context);
     }
 }

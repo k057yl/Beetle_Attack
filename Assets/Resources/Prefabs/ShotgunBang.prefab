@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 846710165894330912}
   - component: {fileID: 5327421571497936175}
   m_Layer: 0
-  m_Name: Bang
+  m_Name: ShotgunBang
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 947c0cbf176869a45b7fd547776a2b0c, type: 3}
+  m_Sprite: {fileID: 21300004, guid: 947c0cbf176869a45b7fd547776a2b0c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

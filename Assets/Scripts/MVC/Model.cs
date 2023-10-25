@@ -15,6 +15,13 @@ public class Model
         get { return _kill;}
         set { _kill = value; }
     }
+    
+    private int _bones;
+    public int Bones
+    {
+        get { return _bones;}
+        set { _bones = value; }
+    }
 
     public Model(int health)
     {
@@ -33,5 +40,15 @@ public class Model
     public void TakeKills(int kill)
     {
         Kill += kill;
+    }
+
+    public void CollectedBones(int bone)
+    {
+        Bones += bone;
+    }
+
+    public void SpendBones(int bone)
+    {
+        Bones -= bone;
     }
 }

@@ -5,20 +5,27 @@ using Zenject;
 
 public class CharacterController : MonoBehaviour
 {
+    private const float DESTROY_DROPS = 0.1f;
+    private const float FLASH_DURATION = 2f;
+    private const float FLASH_INTERVAL = 0.1f;
+    
+
     [SerializeField] private Config _characterConfig;
     [SerializeField] private Transform _bulletSpawnPoint;
+    [SerializeField] private SpriteRenderer _weaponColor;
+    [SerializeField] private SpriteRenderer _childSpriteRenderer;
     
     [Inject] private IInput _input;
     [Inject] private UIController _uiController;
 
     private Model _model;
-    public Model Model => _model;//-------------------
+    public Model Model => _model;
     private CharacterView _characterView;
     private WeaponSwitcher _weaponSwitcher;
-    
+
     private Transform _objectTransform;
     private bool _canTakeDamage = true;
-    
+
 
     private void Start()
     {
@@ -33,12 +40,7 @@ public class CharacterController : MonoBehaviour
     private void Update()
     {
         RotateToMouse();
-        
-        if (_input.IsFireTriggered())
-        {
-            Shot();
-        }
-        
+
         UpdateHealthText();
         
         HandleWeaponSwitchInput();
@@ -50,6 +52,8 @@ public class CharacterController : MonoBehaviour
 
         _characterConfig.Rigidbody2D = GetComponent<Rigidbody2D>();
         _weaponSwitcher = GetComponent<WeaponSwitcher>();
+        
+        SwitchToPistol();
         
         _objectTransform = transform;
 
@@ -80,10 +84,14 @@ public class CharacterController : MonoBehaviour
     {
         if (col.gameObject.CompareTag(Constants.ENEMY) && _canTakeDamage)
         {
+            SoundBox.Instance.PlaySound(SoundType.Damage);
+
             _model.TakeDamage(Constants.TEN);
             Debug.Log("Damage 10");
             _canTakeDamage = false;
             StartCoroutine(EnableDamageAfterDelay(Constants.TWO));
+            
+            StartCoroutine(FlashCharacter());
         }
     }
 
@@ -91,8 +99,12 @@ public class CharacterController : MonoBehaviour
     {
         if (col.CompareTag(Constants.SKULL))
         {
-            col.gameObject.transform.Translate(Vector3.Lerp(transform.position, Vector3.up * 3f, 5f));
-            Destroy(col.gameObject, Constants.ONE);
+            SoundBox.Instance.PlaySound(SoundType.TakeItem);
+            
+            _model.CollectedBones(Constants.ONE);
+            _uiController.UpdateBonesText();
+            
+            Destroy(col.gameObject, DESTROY_DROPS);
         }
     }
 
@@ -101,10 +113,24 @@ public class CharacterController : MonoBehaviour
         yield return new WaitForSeconds(delay);
         _canTakeDamage = true;
     }
+    
+    private IEnumerator FlashCharacter()
+    {
+        for (float i = 0; i < FLASH_DURATION; i += FLASH_INTERVAL)
+        {
+            _weaponColor.enabled = !_weaponColor.enabled;
+            _childSpriteRenderer.enabled = !_childSpriteRenderer.enabled;
+            
+            yield return new WaitForSeconds(FLASH_INTERVAL);
+        }
+
+        _childSpriteRenderer.enabled = true;
+    }
 
     private void Shot()
     {
-        IWeapon currentWeapon = _weaponSwitcher.GetCurrentWeapon();
+        WeaponBase currentWeapon = _weaponSwitcher.GetCurrentWeapon();
+        
         if (currentWeapon != null)
         {
             currentWeapon.Fire(_bulletSpawnPoint);
@@ -116,15 +142,40 @@ public class CharacterController : MonoBehaviour
         _uiController.UpdateHealthText(_model.Health);
     }
 
+    private void SwitchToPistol()
+    {
+        _weaponSwitcher.SwitchWeaponToPistol();
+        _weaponColor.color = Color.cyan;
+        _weaponSwitcher.GetCurrentWeapon().UpdateText();
+    }
+    
+    private void SwitchToShotgun()
+    {
+        _weaponSwitcher.SwitchWeaponToShotgun();
+        _weaponColor.color = Color.yellow;
+        _weaponSwitcher.GetCurrentWeapon().UpdateText();
+    }
+    
     private void HandleWeaponSwitchInput()
     {
         if (_input.IsSlotOneTriggered())
         {
-            _weaponSwitcher.SwitchWeaponToPistol();
+            SwitchToPistol();
+            
         }
         else if (_input.IsSlotTwoTriggered())
         {
-            _weaponSwitcher.SwitchWeaponToShotgun();
+            SwitchToShotgun();
+        }
+        
+        else if (_input.IsFireTriggered())
+        {
+            Shot();
+        }
+        
+        else if (_input.IsReloadedTriggered())
+        {
+            _weaponSwitcher.GetCurrentWeapon().ButtonRecharge();
         }
     }
 }

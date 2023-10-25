@@ -1,23 +1,16 @@
-using System;
 using UnityEngine;
 using Zenject;
 
-
 public abstract class AbstractEnemy : MonoBehaviour
 {
+    protected const float DESTROY_TIME = 0.3f;
+    
     [SerializeField] private Config _config;
     [SerializeField] private int _health = Constants.ONE_HUNDRED;
     [SerializeField] private GameObject _skullPrefab;
-    
-    private CharacterController _characterController;
-    private UIController _uiController;//------------
 
-    [Inject]
-    private void Construct(CharacterController characterController, UIController uiController)
-    {
-        _characterController = characterController;
-        _uiController = uiController;//------------
-    }
+    [Inject] private CharacterController _characterController;
+    [Inject] private UIController _uiController;
 
     private void Update()
     {
@@ -41,8 +34,6 @@ public abstract class AbstractEnemy : MonoBehaviour
         _health -= damage;
         if (_health <= Constants.ZERO)
         {
-            
-            Debug.Log("Die");
             if (_uiController != null)
             {
                 _characterController.Model.TakeKills(Constants.ONE);
@@ -54,7 +45,12 @@ public abstract class AbstractEnemy : MonoBehaviour
 
     private void Die()
     {
+        SoundBox.Instance.PlaySound(SoundType.Dead);
+
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<ParticleSystem>().Play();
+        
         Instantiate(_skullPrefab, transform.position, Quaternion.identity);
-        Destroy(gameObject);
+        Destroy(gameObject, DESTROY_TIME);
     }
 }

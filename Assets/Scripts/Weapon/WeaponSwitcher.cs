@@ -1,28 +1,28 @@
 using UnityEngine;
+using Zenject;
 
 public class WeaponSwitcher : MonoBehaviour
 {
-    [SerializeField] private Pistol _pistol;
-    [SerializeField] private Shotgun _shotgun;
+    [Inject] private Pistol _pistol;
+    [Inject] private Shotgun _shotgun;
+
+    private WeaponBase _currentWeapon;
+
     
-
-    private IWeapon _currentWeapon;
-
     public void SwitchWeaponToPistol()
     {
-        Debug.Log("pistol");
+        //Debug.Log("pistol");
         
         _currentWeapon = _pistol;
     }
 
     public void SwitchWeaponToShotgun()
     {
-        Debug.Log("shotgun");
+        //Debug.Log("shotgun");
         
         _currentWeapon = _shotgun;
     }
-
-    public IWeapon GetCurrentWeapon()
+    public WeaponBase GetCurrentWeapon()
     {
         return _currentWeapon;
     }

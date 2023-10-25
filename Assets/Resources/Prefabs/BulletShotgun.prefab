@@ -137,4 +137,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _impactPrefab: {fileID: 1075176278156378288, guid: 6358cd58e9a8ab041b0ade5ba54e0d10, type: 3}
-  _damage: 55
+  _damageTextPrefab: {fileID: 6060748390537181639, guid: 68488926ecb4f9f48abcb12fecbb7d54, type: 3}

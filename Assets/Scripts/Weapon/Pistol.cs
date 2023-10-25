@@ -1,45 +1,75 @@
+using System.Collections;
 using UnityEngine;
-using Zenject;
 
 public class Pistol : WeaponBase
 {
     [SerializeField] private GameObject _bulletPrefab;
-    
-    private int _currentAmmo;
-    private float _lastFiredTime;
 
-    private IInput _input;
+    private IAmmoSystem _ammoSystem;
 
-    public Camera CameraFPS;
-    
-//----------
-    [Inject]
-    private void Construct(IInput input)
-    {
-        _input = input;
-    }
-//-----------    
     private void Awake()
     {
-        _currentAmmo = 7;
+        _ammoSystem = new AmmoSystem(_maxAmmo, _maxMagazine);
     }
     
-    public override void Fire(Transform bulletSpawnPoint)
+    protected override void FireLogic(Transform bulletSpawnPoint, Vector3 cursorPosition)
     {
-        if (!Input.mousePresent) return;
-        Debug.Log("Piu-piu");
+        int currentMagazineAmmo = _ammoSystem.GetCurrentMagazineAmmo();
 
+        if (currentMagazineAmmo > ZERRO)
+        {
+            var bullet = Instantiate(_bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
 
-        var cursorPosition = CameraFPS.ScreenToWorldPoint(Input.mousePosition);
+            bullet.GetComponent<Rigidbody2D>().AddForce(Vector2.Lerp(transform.position, cursorPosition, ONE_HUNDRED) * FIVE_HUNDRED);
 
+            _ammoSystem.UseAmmo();
+            _maxAmmo = _ammoSystem.GetCurrentAmmo();
+            _maxMagazine = _ammoSystem.GetCurrentMagazineAmmo();
 
-        var bullet = Instantiate(_bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);//-----------
-        
-        bullet.GetComponent<Rigidbody2D>().AddForce(Vector2.Lerp(transform.position, cursorPosition, 100f) * 500f);//-----------
+            UpdateText();
+        }
+
+        if (_maxMagazine <= ZERRO)
+        {
+            _uiController.CoolDownPistolImage();
+            StartCoroutine(Reload());
+        }
     }
-    
+
     public override void ButtonRecharge()
     {
+        if (_ammoSystem.CanReload() && !_isReloading)
+        {
+            _uiController.CoolDownPistolImage();
+            StartCoroutine(ReloadButton());
+        }
+    }
+    
+    private IEnumerator Reload()
+    {
+        _isReloading = true;
+        yield return new WaitForSeconds(_reloadTime);
+
+        _ammoSystem.Reload();
+
+        _maxMagazine = _ammoSystem.GetCurrentMagazineAmmo();
+        _maxAmmo = _ammoSystem.GetCurrentAmmo();
         
+        UpdateText();
+        _isReloading = false;
+    }
+    
+    private IEnumerator ReloadButton()
+    {
+        _isReloading = true;
+        yield return new WaitForSeconds(_reloadTime);
+
+        _ammoSystem.ReloadButton();
+
+        _maxMagazine = _ammoSystem.GetCurrentMagazineAmmo();
+        _maxAmmo = _ammoSystem.GetCurrentAmmo();
+        
+        UpdateText();
+        _isReloading = false;
     }
 }
