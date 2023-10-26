@@ -2,7 +2,8 @@ using UnityEngine;
 
 public enum SoundType
 {
-    Dead,
+    DeadEasy,
+    DeadMiddle,
     Shoot,
     TakeItem,
     Damage,

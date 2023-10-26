@@ -1,16 +1,46 @@
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 public abstract class AbstractEnemy : MonoBehaviour
 {
-    protected const float DESTROY_TIME = 0.3f;
+    private const float DESTROY_TIME = 0.3f;
     
     [SerializeField] private Config _config;
-    [SerializeField] private int _health = Constants.ONE_HUNDRED;
+    [SerializeField] private int _health;
     [SerializeField] private GameObject _skullPrefab;
+    [SerializeField] private GameObject _healthBar;
 
     [Inject] private CharacterController _characterController;
     [Inject] private UIController _uiController;
+
+    protected abstract int MaxHealth { get; }
+    protected abstract SoundType DeathSoundType { get; }
+    
+    private void Start()
+    {
+        ConversionHP();
+    }
+
+    private void ConversionHP()
+    {
+        float fillAmount = (float)_health / MaxHealth;
+        Image healthImage = _healthBar.GetComponentInChildren<Image>();
+        healthImage.fillAmount = fillAmount;
+
+        if (fillAmount > 0.6f)
+        {
+            healthImage.color = Color.green;
+        }
+        else if (fillAmount > 0.25f)
+        {
+            healthImage.color = Color.yellow;
+        }
+        else
+        {
+            healthImage.color = Color.red;
+        }
+    }
 
     private void Update()
     {
@@ -41,11 +71,12 @@ public abstract class AbstractEnemy : MonoBehaviour
             }
             Die();
         }
+        ConversionHP();
     }
 
     private void Die()
     {
-        SoundBox.Instance.PlaySound(SoundType.Dead);
+        SoundBox.Instance.PlaySound(DeathSoundType);
 
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<ParticleSystem>().Play();

@@ -12,8 +12,9 @@ public class CharacterController : MonoBehaviour
 
     [SerializeField] private Config _characterConfig;
     [SerializeField] private Transform _bulletSpawnPoint;
-    [SerializeField] private SpriteRenderer _weaponColor;
     [SerializeField] private SpriteRenderer _childSpriteRenderer;
+    [SerializeField] private SpriteRenderer _weaponCurrent;
+    [SerializeField] private Sprite[] _spriteWeapon;
     
     [Inject] private IInput _input;
     [Inject] private UIController _uiController;
@@ -118,7 +119,7 @@ public class CharacterController : MonoBehaviour
     {
         for (float i = 0; i < FLASH_DURATION; i += FLASH_INTERVAL)
         {
-            _weaponColor.enabled = !_weaponColor.enabled;
+            _weaponCurrent.enabled = !_weaponCurrent.enabled;
             _childSpriteRenderer.enabled = !_childSpriteRenderer.enabled;
             
             yield return new WaitForSeconds(FLASH_INTERVAL);
@@ -145,14 +146,14 @@ public class CharacterController : MonoBehaviour
     private void SwitchToPistol()
     {
         _weaponSwitcher.SwitchWeaponToPistol();
-        _weaponColor.color = Color.cyan;
+        _weaponCurrent.sprite = _spriteWeapon[0];
         _weaponSwitcher.GetCurrentWeapon().UpdateText();
     }
     
     private void SwitchToShotgun()
     {
         _weaponSwitcher.SwitchWeaponToShotgun();
-        _weaponColor.color = Color.yellow;
+        _weaponCurrent.sprite = _spriteWeapon[1];
         _weaponSwitcher.GetCurrentWeapon().UpdateText();
     }
     

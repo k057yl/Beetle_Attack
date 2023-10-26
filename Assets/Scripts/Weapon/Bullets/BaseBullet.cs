@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public abstract class BaseBullet : MonoBehaviour, IBullet
 {
-    [SerializeField] protected GameObject _damageTextPrefab;
+    //[SerializeField] protected GameObject _damageTextPrefab;
     [SerializeField] protected GameObject _impactPrefab;
     
     protected const float LIFE_TIME_PISTOL_BULLET = 0.5f;
@@ -35,10 +35,11 @@ public abstract class BaseBullet : MonoBehaviour, IBullet
                 
                 int randomDamage = GetRandomDamage();
                 enemy.TakeDamage(randomDamage);
-                
+                /*
                 var damageText = Instantiate(_damageTextPrefab, contactPoint, Quaternion.identity);
                 damageText.GetComponent<TextMesh>().text = randomDamage.ToString();
                 Destroy(damageText, GetLifeTime());
+                */
             }
             
             Destroy(gameObject);

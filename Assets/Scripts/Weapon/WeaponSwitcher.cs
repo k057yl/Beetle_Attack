@@ -11,15 +11,11 @@ public class WeaponSwitcher : MonoBehaviour
     
     public void SwitchWeaponToPistol()
     {
-        //Debug.Log("pistol");
-        
         _currentWeapon = _pistol;
     }
 
     public void SwitchWeaponToShotgun()
     {
-        //Debug.Log("shotgun");
-        
         _currentWeapon = _shotgun;
     }
     public WeaponBase GetCurrentWeapon()
