@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2945658524326789949}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: WeaponSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 3079315857184844090}
   - component: {fileID: 1433802059090824358}
   - component: {fileID: 3086477857343474207}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Character
   m_TagString: Character
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5551446313642389650}
   - component: {fileID: 3397733424570469353}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Character2_Idle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,7 +231,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7099685889871745466}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BulletSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +263,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4103755359664899221}
   - component: {fileID: 6386608633408294447}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SpriteWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}

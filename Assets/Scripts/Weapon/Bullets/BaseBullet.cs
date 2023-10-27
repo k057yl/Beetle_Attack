@@ -8,6 +8,11 @@ public abstract class BaseBullet : MonoBehaviour, IBullet
     
     protected const float LIFE_TIME_PISTOL_BULLET = 0.5f;
     protected const float LIFE_TIME_SHOTGUN_BULLET = 0.25f;
+    protected const float LIFE_TIME_FIREBALL = 5.5f;
+    
+    //Fireball
+    protected const int MIN_FIREBALL_DAMAGE = 30;
+    protected const int MAX_FIREBALL_DAMAGE = 51;
     
     //Pistol
     protected const int MIN_PISTOL_DAMAGE = 7;
@@ -40,6 +45,26 @@ public abstract class BaseBullet : MonoBehaviour, IBullet
                 damageText.GetComponent<TextMesh>().text = randomDamage.ToString();
                 Destroy(damageText, GetLifeTime());
                 */
+            }
+            
+            Destroy(gameObject);
+        }
+    }
+    
+    protected void HandleCollisionCharacter(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag(Constants.CHARACTER))
+        {
+            CharacterController characterController = collision.gameObject.GetComponent<CharacterController>();
+            
+            if (characterController != null)
+            {
+                Vector2 contactPoint = collision.contacts[0].point;
+                var impact = Instantiate(_impactPrefab, contactPoint, Quaternion.identity);
+                Destroy(impact, Constants.TWO_TENTHS);
+                
+                int randomDamage = GetRandomDamage();
+                characterController.Model.TakeDamage(randomDamage);
             }
             
             Destroy(gameObject);

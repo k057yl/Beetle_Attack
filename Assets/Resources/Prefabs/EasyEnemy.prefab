@@ -98,6 +98,7 @@ MonoBehaviour:
   _health: 100
   _skullPrefab: {fileID: 8440450304967894950, guid: 650da5389d8a29148a37c2dc1cb691a6, type: 3}
   _healthBar: {fileID: 4226749504572468025}
+  _bulletPrefab: {fileID: 9023797928921117372, guid: 1fb8d67fad09d684e8a7750ea8f8d80c, type: 3}
 --- !u!212 &893687898
 SpriteRenderer:
   m_ObjectHideFlags: 0
