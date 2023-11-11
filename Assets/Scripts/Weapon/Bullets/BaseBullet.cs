@@ -3,7 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public abstract class BaseBullet : MonoBehaviour, IBullet
 {
-    //[SerializeField] protected GameObject _damageTextPrefab;
     [SerializeField] protected GameObject _impactPrefab;
     
     protected const float LIFE_TIME_PISTOL_BULLET = 0.5f;
@@ -25,10 +24,10 @@ public abstract class BaseBullet : MonoBehaviour, IBullet
     public abstract void DestroyBulletTime();
     protected abstract int GetRandomDamage();
     protected abstract float GetLifeTime();
-    
+
     protected void HandleCollision(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag(Constants.ENEMY))
+        if (collision.gameObject.CompareTag(Constants.ENEMY) || collision.gameObject.CompareTag("Barrel"))//*************
         {
             AbstractEnemy enemy = collision.gameObject.GetComponent<AbstractEnemy>();
             
@@ -40,11 +39,17 @@ public abstract class BaseBullet : MonoBehaviour, IBullet
                 
                 int randomDamage = GetRandomDamage();
                 enemy.TakeDamage(randomDamage);
-                /*
-                var damageText = Instantiate(_damageTextPrefab, contactPoint, Quaternion.identity);
-                damageText.GetComponent<TextMesh>().text = randomDamage.ToString();
-                Destroy(damageText, GetLifeTime());
-                */
+            }
+            
+            Explosion explosion = collision.gameObject.GetComponent<Explosion>();//**********
+            if (explosion != null)
+            {
+                Vector2 contactPoint = collision.contacts[0].point;
+                var impact = Instantiate(_impactPrefab, contactPoint, Quaternion.identity);
+                Destroy(impact, Constants.TWO_TENTHS);
+                
+                int randomDamage = GetRandomDamage();
+                explosion.TakeDamage(randomDamage);
             }
             
             Destroy(gameObject);

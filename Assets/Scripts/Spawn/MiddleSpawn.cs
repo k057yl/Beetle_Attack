@@ -8,7 +8,7 @@ public class MiddleSpawn : MonoBehaviour
     
     [SerializeField] private Transform _spawnPoint;
 
-    [Inject] private MiddleEnemyFactory _easyEnemyFactory;
+    [Inject] private MiddleEnemyFactory _middleEnemyFactory;
     
     private bool _spawned = false;
     
@@ -26,7 +26,7 @@ public class MiddleSpawn : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
         {
-            var enemy = _easyEnemyFactory.Create();
+            var enemy = _middleEnemyFactory.Create();
             enemy.transform.position = _spawnPoint.position;
 
             if (enemy != null)

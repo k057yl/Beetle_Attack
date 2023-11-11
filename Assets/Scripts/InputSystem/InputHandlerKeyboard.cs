@@ -44,4 +44,9 @@ public class InputHandlerKeyboard : IInput
     {
         return _newInput.Gameplay.SuperSpeed.triggered;
     }
+
+    public bool IsExitTriggered()
+    {
+        return _newInput.Gameplay.Exit.triggered;
+    }
 }

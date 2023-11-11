@@ -9,6 +9,11 @@ TagManager:
   - Enemy
   - Skull
   - Character
+  - Door2
+  - Door4
+  - Door1
+  - Door3
+  - Barrel
   layers:
   - Default
   - TransparentFX
@@ -17,7 +22,7 @@ TagManager:
   - Water
   - UI
   - Character
-  - 
+  - NPC
   - 
   - 
   - 

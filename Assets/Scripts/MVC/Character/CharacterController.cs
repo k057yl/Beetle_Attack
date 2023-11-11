@@ -3,7 +3,7 @@ using UnityEngine;
 using Zenject;
 
 
-public class CharacterController : MonoBehaviour
+public class CharacterController : MonoBehaviour, IDamageable
 {
     private const float DESTROY_DROPS = 0.1f;
     private const float FLASH_DURATION = 2f;
@@ -23,7 +23,7 @@ public class CharacterController : MonoBehaviour
     public Model Model => _model;
     private CharacterView _characterView;
     private WeaponSwitcher _weaponSwitcher;
-
+    
     private Transform _objectTransform;
     private bool _canTakeDamage = true;
 
@@ -36,12 +36,11 @@ public class CharacterController : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+        RotateToMouse();
     }
 
     private void Update()
     {
-        RotateToMouse();
-
         UpdateHealthText();
         
         HandleWeaponSwitchInput();
@@ -178,5 +177,10 @@ public class CharacterController : MonoBehaviour
         {
             _weaponSwitcher.GetCurrentWeapon().ButtonRecharge();
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Model.TakeDamage(damage);
     }
 }

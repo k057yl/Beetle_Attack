@@ -9,4 +9,5 @@ public interface IInput
     Vector3 GetCursorPosition();
     bool IsReloadedTriggered();
     bool IsSuperSpeedTriggered();
+    bool IsExitTriggered();
 }

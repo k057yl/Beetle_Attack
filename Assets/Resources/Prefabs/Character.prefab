@@ -124,8 +124,9 @@ MonoBehaviour:
   _childSpriteRenderer: {fileID: 3397733424570469353}
   _weaponCurrent: {fileID: 6386608633408294447}
   _spriteWeapon:
-  - {fileID: 21300000, guid: 895956240b6e4e148b2ecb8c8661c894, type: 3}
-  - {fileID: 21300000, guid: 4417a35f071f93a4fad01dbefa3bb064, type: 3}
+  - {fileID: 21300000, guid: 58e13cd76ebd5d74481439c2390d8c59, type: 3}
+  - {fileID: 21300000, guid: f2bd3fd22b5f97544b06fdde6b699d46, type: 3}
+  _parallaxPrefab: {fileID: 6786470487390685807, guid: 38a493fbdeaa1ec42b787165daca1dbe, type: 3}
 --- !u!114 &3086477857343474207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,7 +279,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8386346153375133618}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0.04, y: 0.58, z: -1}
+  m_LocalPosition: {x: 0.09, y: 0.83, z: -1}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -326,7 +327,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 895956240b6e4e148b2ecb8c8661c894, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 58e13cd76ebd5d74481439c2390d8c59, type: 3}
   m_Color: {r: 0.9811321, g: 0.9811321, b: 0.9811321, a: 1}
   m_FlipX: 0
   m_FlipY: 1

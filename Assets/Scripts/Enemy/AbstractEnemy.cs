@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-public abstract class AbstractEnemy : MonoBehaviour
+public abstract class AbstractEnemy : MonoBehaviour, IDamageable//*********************IDAmageable
 {
     private const int DISTANCE_RAY = 10;
     
@@ -56,8 +56,9 @@ public abstract class AbstractEnemy : MonoBehaviour
         if (_bulletPrefab != null)
         {
             GameObject bullet = Instantiate(_bulletPrefab, transform.position, Quaternion.identity);
-        
+
             Vector2 direction = (_characterController.transform.position - transform.position).normalized;
+
             bullet.GetComponent<Rigidbody2D>().velocity = direction * Constants.TWENTY;
         }
     }
