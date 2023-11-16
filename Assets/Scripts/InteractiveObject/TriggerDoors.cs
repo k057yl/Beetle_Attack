@@ -2,20 +2,28 @@ using UnityEngine;
 
 public class TriggerDoors : MonoBehaviour
 {
-    [SerializeField] private DoorListLevel_1 _doorList;
+    [SerializeField] private DoorController _doorController;
 
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.GetComponent<CharacterController>())
         {
-            if (_doorList.CollisionCount == 0)
+            if (_doorController.CollisionCount == 0)
             {
-                _doorList.DoorFirstRoom();
+                _doorController.CloseDoorById(0);
+                _doorController.CloseDoorById(1);
+                
+                _doorController.CollisionCountPlus();
+                
                 Destroy(gameObject);
             }
-            else if (_doorList.CollisionCount == 1)
+            else if (_doorController.CollisionCount == 1)
             {
-                _doorList.DoorSecondRoom();
+                _doorController.CloseDoorById(2);
+                _doorController.CloseDoorById(3);
+                
+                _doorController.CollisionCountPlus();
+                
                 Destroy(gameObject);
             }
         }

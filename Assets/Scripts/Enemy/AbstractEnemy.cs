@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-public abstract class AbstractEnemy : MonoBehaviour, IDamageable//*********************IDAmageable
+public abstract class AbstractEnemy : MonoBehaviour, IDamageable
 {
     private const int DISTANCE_RAY = 10;
     
@@ -107,13 +107,19 @@ public abstract class AbstractEnemy : MonoBehaviour, IDamageable//**************
     
     private void FollowingPlayer()
     {
-        var diference = _characterController.transform.position - transform.position;
-        var rotateZ = Mathf.Atan2(diference.y, diference.x) * Mathf.Rad2Deg - Constants.ANGLE_90;
         transform.position = Vector2.MoveTowards(transform.position, _characterController.transform.position,
             Time.deltaTime * _config.Speed);
-        transform.rotation = Quaternion.Euler(Constants.ZERO, Constants.ZERO, rotateZ);
+        Rotation();
     }
    
+    private void Rotation()
+    {
+        var diference = _characterController.transform.position - transform.position;
+        var rotateZ = Mathf.Atan2(diference.y, diference.x) * Mathf.Rad2Deg - Constants.ANGLE_90;
+        
+        transform.rotation = Quaternion.Euler(Constants.ZERO, Constants.ZERO, rotateZ);
+    }
+    
     public void TakeDamage(int damage)
     {
         _health -= damage;

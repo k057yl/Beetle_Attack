@@ -9,6 +9,8 @@ public class NPC : MonoBehaviour
 
     [Inject] private CharacterController _characterController;
     [Inject] private PopupController _popupController;
+    
+    [SerializeField] private GameObject _bulletPrefab;
 
     private void Update()
     {
@@ -24,6 +26,8 @@ public class NPC : MonoBehaviour
         Vector3 targetPosition = playerPosition + _characterController.transform.forward * DISTANCE;
 
         float distance = Vector3.Distance(transform.position, playerPosition);
+        
+        Rotation();
 
         if (distance >= DISTANCE_MAX)
         {
@@ -32,11 +36,36 @@ public class NPC : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D col)
+    private void Rotation()
+    {
+        var diference = _characterController.transform.position - transform.position;
+        var rotateZ = Mathf.Atan2(diference.y, diference.x) * Mathf.Rad2Deg - Constants.ANGLE_90;
+        
+        transform.rotation = Quaternion.Euler(Constants.ZERO, Constants.ZERO, rotateZ);
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.TryGetComponent(out CharacterController characterController))
         {
             _popupController.FollowNPC();
+        }
+        if (col.gameObject.TryGetComponent(out Car car))
+        {
+            CreateBullet();
+        }
+    }
+
+
+    private void CreateBullet()
+    {
+        if (_bulletPrefab != null)
+        {
+            GameObject bullet = Instantiate(_bulletPrefab, transform.position, Quaternion.identity);
+
+            Vector2 direction = (_characterController.transform.position - transform.position).normalized;
+
+            bullet.GetComponent<Rigidbody2D>().velocity = direction * Constants.TWENTY;
         }
     }
 }

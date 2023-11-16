@@ -4,22 +4,22 @@ using Zenject;
 
 public class Doors : MonoBehaviour
 {
+    public class Factory : PlaceholderFactory<int, Doors> { }
     private const int SHIFT_DISTANCE = 5;
     
     private const float SHIFT_TIME = 1f;
-
-    private const string DOOR_2 = "Door2";
-    private const string DOOR_4 = "Door4";
-
-    [Inject] private CharacterController _characterController;
-    [Inject] private UIController _uiController;
-
+    
     private bool _isMoving = false;
+//--------------
+    private int _doorId;
 
-    private bool HasEnoughBones()
+    public int DoorId => _doorId;
+
+    public void Initialize(int doorId)
     {
-        return _characterController.Model.Bones >= Constants.TEN;
+        _doorId = doorId;
     }
+//----------------
 
     private IEnumerator MoveDoorCoroutine(Vector3 direction)
     {
@@ -40,54 +40,31 @@ public class Doors : MonoBehaviour
 
         _isMoving = false;
     }
-
-    public IEnumerator OpenDoorCoroutine()
+    
+    private IEnumerator OpenDoorCoroutine()//--------------
     {
         if (_isMoving) yield break;
 
-        if (!HasEnoughBones())
-        {
-            Debug.Log("Not enough bones, need 10 bones!!!");
-            yield break;
-        }
-
         yield return MoveDoorCoroutine(Vector3.up);
         
-        _uiController.UpdateBonesText();
         GetComponent<Collider2D>().enabled = false;
         GetComponent<SpriteRenderer>().color = Color.gray;
     }
 
-    public IEnumerator CloseDoorCoroutine()
+    private IEnumerator CloseDoorCoroutine()//--------------
     {
         if (_isMoving) yield break;
 
         yield return MoveDoorCoroutine(Vector3.down);
     }
-    
-    private void OnCollisionEnter2D(Collision2D col)
+//-----------
+    public void Open()
     {
-        if (col.gameObject.GetComponent<CharacterController>())
-        {
-            if (HasEnoughBones())
-            {
-                if (gameObject.tag == DOOR_2 ||  gameObject.tag == DOOR_4)
-                {
-                    StartCoroutine(OpenDoorCoroutine());
-                    _characterController.Model.SpendBones(Constants.TEN);
-                    _uiController.UpdateBonesText();
-                    GetComponent<Collider2D>().enabled = false;
-                    GetComponent<SpriteRenderer>().color = Color.gray;
-                }
-                else
-                {
-                    Debug.Log("This door is passive.");
-                }
-            }
-            else
-            {
-                Debug.Log("Not enough bones, need 10 bones!!!");
-            }
-        }
+        StartCoroutine(OpenDoorCoroutine());
+    }
+    
+    public void Close()
+    {
+        StartCoroutine(CloseDoorCoroutine());
     }
 }

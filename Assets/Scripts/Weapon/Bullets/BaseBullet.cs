@@ -27,7 +27,7 @@ public abstract class BaseBullet : MonoBehaviour, IBullet
 
     protected void HandleCollision(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag(Constants.ENEMY) || collision.gameObject.CompareTag("Barrel"))//*************
+        if (collision.gameObject.CompareTag(Constants.ENEMY) || collision.gameObject.CompareTag(Constants.BARREL))
         {
             AbstractEnemy enemy = collision.gameObject.GetComponent<AbstractEnemy>();
             
@@ -41,7 +41,7 @@ public abstract class BaseBullet : MonoBehaviour, IBullet
                 enemy.TakeDamage(randomDamage);
             }
             
-            Explosion explosion = collision.gameObject.GetComponent<Explosion>();//**********
+            Explosion explosion = collision.gameObject.GetComponent<Explosion>();
             if (explosion != null)
             {
                 Vector2 contactPoint = collision.contacts[0].point;
@@ -58,10 +58,36 @@ public abstract class BaseBullet : MonoBehaviour, IBullet
     
     protected void HandleCollisionCharacter(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag(Constants.CHARACTER))
+        if (!collision.gameObject.TryGetComponent(out Car car))
         {
-            CharacterController characterController = collision.gameObject.GetComponent<CharacterController>();
+            if (collision.gameObject.TryGetComponent(out CharacterController characterController))
+            {
+                if (characterController != null)
+                {
+                    Vector2 contactPoint = collision.contacts[0].point;
+                    var impact = Instantiate(_impactPrefab, contactPoint, Quaternion.identity);
+                    Destroy(impact, Constants.TWO_TENTHS);
+                
+                    int randomDamage = GetRandomDamage();
+                    characterController.Model.TakeDamage(randomDamage);
+                }
             
+                Destroy(gameObject);
+            }
+        }
+        else
+        {
+            Vector2 contactPoint = collision.contacts[0].point;
+            var impact = Instantiate(_impactPrefab, contactPoint, Quaternion.identity);
+            Destroy(impact, Constants.TWO_TENTHS);
+        
+            car.TakeDamage(51);
+        }
+        /*
+        if (collision.gameObject.TryGetComponent(out CharacterController characterController))
+        {
+            characterController = collision.gameObject.GetComponent<CharacterController>();
+
             if (characterController != null)
             {
                 Vector2 contactPoint = collision.contacts[0].point;
@@ -74,5 +100,20 @@ public abstract class BaseBullet : MonoBehaviour, IBullet
             
             Destroy(gameObject);
         }
+
+        if (collision.gameObject.TryGetComponent(out Car car))
+        {
+            car = collision.gameObject.GetComponent<Car>();
+
+            if (car != null)
+            {
+                Vector2 contactPoint = collision.contacts[0].point;
+                var impact = Instantiate(_impactPrefab, contactPoint, Quaternion.identity);
+                Destroy(impact, Constants.TWO_TENTHS);
+                
+                car.TakeDamage(51);
+            }
+        }
+        */
     }
 }

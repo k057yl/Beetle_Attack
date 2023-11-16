@@ -24,4 +24,6 @@ public static class Constants
     public const string SPAWN_POINT = "Spawn";
     public const string ENEMY = "Enemy";
     public const string SKULL = "Skull";
+    public const string BARREL = "Barrel";
+    public const string BOOM = "Boom";
 }

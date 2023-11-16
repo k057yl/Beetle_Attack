@@ -182,5 +182,8 @@ public class CharacterController : MonoBehaviour, IDamageable
     public void TakeDamage(int damage)
     {
         Model.TakeDamage(damage);
+        
+        StartCoroutine(EnableDamageAfterDelay(Constants.TWO));
+        StartCoroutine(FlashCharacter());
     }
 }

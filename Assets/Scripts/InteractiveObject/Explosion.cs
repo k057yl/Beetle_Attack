@@ -8,19 +8,30 @@ public class Explosion : MonoBehaviour, IDamageable
     [SerializeField] private int _explosionDamage;
     [SerializeField] private float _explosionRadius;
 
+    [SerializeField] private Animator _animator;
+    
+    private bool _hasExploded = false;
+
     void Explode()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, _explosionRadius, _damageableLayer);
-
-        foreach (Collider2D collider in colliders)
+        if (!_hasExploded)
         {
-            IDamageable damageable = collider.GetComponent<IDamageable>();
-            if (damageable != null)
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, _explosionRadius, _damageableLayer);
+
+            foreach (Collider2D collider in colliders)
             {
-                damageable.TakeDamage(_explosionDamage);
+                IDamageable damageable = collider.GetComponent<IDamageable>();
+                if (damageable != null)
+                {
+                    damageable.TakeDamage(_explosionDamage);
+                }
             }
+            _animator.SetBool(Constants.BOOM, true);
+
+            Destroy(gameObject, 0.35f);
+
+            _hasExploded = true;
         }
-        Destroy(gameObject);
     }
 
     private void Update()
